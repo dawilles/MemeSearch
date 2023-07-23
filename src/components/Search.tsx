@@ -2,7 +2,7 @@ import React from "react";
 import { Formik, Form, Field } from "formik";
 import styles from "./Search.module.css"
 
-interface SearchProps {
+type SearchProps = {
   onSearch: (query: string) => void;
 }
 

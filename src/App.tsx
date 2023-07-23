@@ -4,7 +4,7 @@ import Gallery from "./components/Gallery";
 import Search from "./components/Search";
 import styles from './App.module.css';
 
-interface Meme {
+type Meme = {
   id: string;
   title: string;
   images: {

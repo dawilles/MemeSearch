@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./Image.module.css";
 
-interface Meme {
+type Meme = {
   title: string;
   images: {
     fixed_width: {
@@ -10,7 +10,7 @@ interface Meme {
   }
 }
 
-interface ImageProps {
+type ImageProps = {
   meme: Meme;
 }
 

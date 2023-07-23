@@ -3,7 +3,7 @@ import Image from "./Image";
 import styles from "./Gallery.module.css";
 import InfiniteScroll from 'react-infinite-scroll-component';
 
-interface Meme {
+type Meme = {
   id: string;
   title: string;
   images: {
@@ -13,7 +13,7 @@ interface Meme {
   }
 }
 
-interface GalleryProps {
+type GalleryProps = {
   memes: Meme[];
   fetchMoreData: () => void;
 }
