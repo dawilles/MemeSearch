@@ -1,4 +1,5 @@
-import React, { useState, FormEvent } from "react";
+import React from "react";
+import { Formik, Form, Field } from "formik";
 import styles from "./Search.module.css"
 
 interface SearchProps {
@@ -6,26 +7,26 @@ interface SearchProps {
 }
 
 const Search = ({ onSearch }: SearchProps) => { 
-  const [query, setQuery] = useState("");
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => { 
-    setQuery(e.target.value);
-  };
-
-  const handleSubmit = (e: FormEvent) => { 
-    e.preventDefault();
-    onSearch(query);
-  };
 
   return (
-    <form onSubmit={handleSubmit} className={styles.search}>
-      <input
-        type="text"
-        placeholder="Search for memes..."
-        onChange={handleInputChange}
-      />
-      <input type="submit" value="Search" />
-    </form>
+    <Formik
+      initialValues={{ query: "" }}
+      onSubmit={(values, { resetForm }) => {
+        onSearch(values.query);
+        resetForm();
+      }}
+    >
+      {() => (
+        <Form className={styles.search}>
+          <Field
+            type="text"
+            name="query"
+            placeholder="Search for memes..."
+          />
+          <input type="submit" value="Search" />
+        </Form>
+      )}
+    </Formik>
   );
 };
 
