@@ -1,23 +1,20 @@
 import React from "react";
-import styles from "./Image.module.css";
+import { CardMedia } from "@mui/material";
+import { ImageProps } from '../utils/types';
 
-type Meme = {
-  title: string;
-  images: {
-    fixed_width: {
-      url: string;
-    }
-  }
-}
-
-type ImageProps = {
-  meme: Meme;
-}
-
-const Image = ({ meme }: ImageProps) => { 
-  return (
-    <img className={styles.img} src={meme.images.fixed_width.url} alt={meme.title} />
-  );
+const Image = ({ meme }: ImageProps) => {
+	return (
+		<CardMedia
+			component='img'
+			image={meme.images.fixed_width.url}
+			alt={meme.title}
+			sx={{
+				maxWidth: "100%",
+				border: "solid 3px black",
+				borderRadius: "3px",
+			}}
+		/>
+	);
 };
 
 export default Image;

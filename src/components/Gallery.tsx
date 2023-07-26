@@ -1,37 +1,32 @@
 import React from "react";
 import Image from "./Image";
-import styles from "./Gallery.module.css";
-import InfiniteScroll from 'react-infinite-scroll-component';
+import InfiniteScroll from "react-infinite-scroll-component";
+import Box from "@mui/material/Box";
+import CircularProgress from "@mui/material/CircularProgress";
+import Grid from "@mui/material/Grid";
+import { GalleryProps, Meme } from "../utils/types";
 
-type Meme = {
-  id: string;
-  title: string;
-  images: {
-    fixed_width: {
-      url: string;
-    }
-  }
-}
-
-type GalleryProps = {
-  memes: Meme[];
-  fetchMoreData: () => void;
-}
-
-const Gallery = ({memes, fetchMoreData}: GalleryProps) => {  
-  return (
-    <InfiniteScroll
-      dataLength={memes.length}
-      next={fetchMoreData}
-      hasMore={true}
-      loader={<h4>Loading...</h4>}
-      className={styles.gallery}
-    >
-      {memes.map((meme: Meme) => (  
-        <Image key={meme.id} meme={meme} />
-      ))}
-    </InfiniteScroll>
-  );
+const Gallery = ({ memes, fetchMoreData, hasMore }: GalleryProps) => {
+	return (
+		<InfiniteScroll
+			dataLength={memes.length}
+			next={fetchMoreData}
+			hasMore={hasMore}
+			loader={
+				<Box sx={{ display: "flex", justifyContent: "center" }}>
+					<CircularProgress />
+				</Box>
+			}
+			style={{ overflow: "visible" }}>
+			<Grid container spacing={4} sx={{ marginTop: "30px" }}>
+				{memes.map((meme: Meme) => (
+					<Grid item xs={12} sm={6} md={4} lg={3} key={meme.id}>
+						<Image meme={meme} />
+					</Grid>
+				))}
+			</Grid>
+		</InfiniteScroll>
+	);
 };
 
 export default Gallery;
