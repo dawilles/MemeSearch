@@ -1,10 +1,12 @@
 import React from "react";
-import { Formik, Form, Field } from "formik";
-import { FieldProps } from "formik";
-import { TextField, Button, Box } from "@mui/material";
-import { SearchProps } from "../utils/types";
+import { Formik, Form, Field, FieldProps } from "formik";
+import { TextField, Button, Stack } from "@mui/material";
 
-const Search = ({ onSearch }: SearchProps) => {
+type SearchProps = {
+	onSearch: (query: string) => void;
+};
+
+export const Search = ({ onSearch }: SearchProps) => {
 	return (
 		<Formik
 			initialValues={{ query: "" }}
@@ -14,7 +16,7 @@ const Search = ({ onSearch }: SearchProps) => {
 			}}>
 			{({ isSubmitting }) => (
 				<Form>
-					<Box display='flex' justifyContent='center' marginBottom='20px'>
+					<Stack direction='row'>
 						<Field name='query'>
 							{({ field }: FieldProps) => (
 								<TextField
@@ -29,14 +31,12 @@ const Search = ({ onSearch }: SearchProps) => {
 							variant='contained'
 							color='primary'
 							disabled={isSubmitting}
-              sx={{ marginLeft: 1 }}>
+							sx={{ marginLeft: 1 }}>
 							Search
 						</Button>
-					</Box>
+					</Stack>
 				</Form>
 			)}
 		</Formik>
 	);
 };
-
-export default Search;

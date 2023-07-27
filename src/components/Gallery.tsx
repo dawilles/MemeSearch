@@ -1,21 +1,27 @@
 import React from "react";
-import Image from "./Image";
+import { Image } from "./Image";
+import { Meme } from "../hooks/useMemes";
 import InfiniteScroll from "react-infinite-scroll-component";
-import Box from "@mui/material/Box";
+import Stack from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import Grid from "@mui/material/Grid";
-import { GalleryProps, Meme } from "../utils/types";
 
-const Gallery = ({ memes, fetchMoreData, hasMore }: GalleryProps) => {
+type GalleryProps = {
+	memes: Meme[];
+	fetchMoreData: () => void;
+	hasMore: boolean;
+};
+
+export const Gallery = ({ memes, fetchMoreData, hasMore }: GalleryProps) => {
 	return (
 		<InfiniteScroll
 			dataLength={memes.length}
 			next={fetchMoreData}
 			hasMore={hasMore}
 			loader={
-				<Box sx={{ display: "flex", justifyContent: "center" }}>
+				<Stack justifyContent='center'>
 					<CircularProgress />
-				</Box>
+				</Stack>
 			}
 			style={{ overflow: "visible" }}>
 			<Grid container spacing={4} sx={{ marginTop: "30px" }}>
@@ -28,5 +34,3 @@ const Gallery = ({ memes, fetchMoreData, hasMore }: GalleryProps) => {
 		</InfiniteScroll>
 	);
 };
-
-export default Gallery;

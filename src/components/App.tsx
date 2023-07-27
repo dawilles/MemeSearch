@@ -3,19 +3,55 @@ import {
 	Container,
 	Typography,
 	Button,
-	Box,
 	CircularProgress,
+	Stack,
 } from "@mui/material";
-import Gallery from "./Gallery";
-import Search from "./Search";
-import useMemes from "../hooks/useMemes";
+import { Gallery } from "./Gallery";
+import { Search } from "./Search";
+import { useMemes } from "../hooks/useMemes";
 
-const App = () => {
+export const App = () => {
 	const { state, handleSearch, fetchMoreData } = useMemes();
+
+	let content;
+	switch (state.type) {
+		case "loading":
+			content = (
+				<Stack justifyContent='center'>
+					<CircularProgress />
+				</Stack>
+			);
+			break;
+		case "error":
+			content = (
+				<>
+					<Typography color='error'>Error: {state.error}</Typography>
+					<Button
+						variant='contained'
+						color='primary'
+						onClick={() => handleSearch(state.query)}>
+						Try again
+					</Button>
+				</>
+			);
+			break;
+		case "loaded":
+			content = (
+				<Gallery
+					memes={state.memes}
+					fetchMoreData={fetchMoreData}
+					hasMore={state.hasMore}
+				/>
+			);
+			break;
+		default:
+			content = null;
+			break;
+	}
 
 	return (
 		<Container fixed>
-			<Box display='flex' flexDirection='column' alignItems='center'>
+			<Stack flexDirection='column' alignItems='center'>
 				<Typography
 					variant='h4'
 					component='h1'
@@ -24,32 +60,8 @@ const App = () => {
 					Giphy Meme Search
 				</Typography>
 				<Search onSearch={handleSearch} />
-				{state.status === "loading" && (
-					<Box display='flex' justifyContent='center'>
-						<CircularProgress />
-					</Box>
-				)}
-				{state.status === "error" && (
-					<>
-						<Typography color='error'>Error: {state.error}</Typography>
-						<Button
-							variant='contained'
-							color='primary'
-							onClick={() => handleSearch(state.query)}>
-							Try again
-						</Button>
-					</>
-				)}
-				{state.status === "loaded" && (
-					<Gallery
-						memes={state.memes}
-						fetchMoreData={fetchMoreData}
-						hasMore={state.hasMore}
-					/>
-				)}
-			</Box>
+				{content}
+			</Stack>
 		</Container>
 	);
 };
-
-export default App;

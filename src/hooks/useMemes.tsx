@@ -1,33 +1,35 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { getMemes } from "../services/giphy";
-import { Meme } from "../utils/types";
 
-type BaseState = {
-	query: string;
-	memes: Meme[];
-	hasMore: boolean;
+export type Meme = {
+	id: string;
+	images: { fixed_width: { url: string } };
+	title: string;
 };
 
-type IdleState = BaseState & { status: "idle" };
-type LoadingState = BaseState & { status: "loading" };
-type ErrorState = BaseState & { status: "error"; error: string };
-type LoadedState = BaseState & { status: "loaded" };
+type IdleState = { type: "idle" };
+type LoadingState = { type: "loading"; query: string };
+type LoadedState = {
+	type: "loaded";
+	memes: Meme[];
+	query: string;
+	hasMore: boolean;
+};
+type ErrorState = { type: "error"; error: string; query: string };
 type State = IdleState | LoadingState | ErrorState | LoadedState;
 
-const useMemes = () => {
-	const [state, setState] = useState<State>({
-		status: "idle",
-		query: "",
-		memes: [],
-		hasMore: false,
-	});
+export const useMemes = () => {
+	const [state, setState] = useState<State>({ type: "idle" });
+	const loading = useRef(false);
 
 	const handleSearch = async (query: string) => {
-		setState({ status: "loading", query, memes: [], hasMore: false });
+		if (loading.current) return;
+		loading.current = true;
+		setState({ type: "loading", query });
 		try {
 			const data = await getMemes(query);
 			setState({
-				status: "loaded",
+				type: "loaded",
 				memes: data?.data || [],
 				query,
 				hasMore: data.hasMore || false,
@@ -35,33 +37,51 @@ const useMemes = () => {
 		} catch (error) {
 			const message = (error as Error).message;
 			setState({
-				status: "error",
+				type: "error",
 				error: message,
 				query,
-				memes: [],
-				hasMore: false,
 			});
+		} finally {
+			loading.current = false;
 		}
 	};
 
 	const fetchMoreData = async () => {
-		if (state.status !== "loaded" || !state.hasMore) return;
-
-		try {
-			const data = await getMemes(state.query, state.memes.length);
-			setState((prevState) => ({
-				...prevState,
-				status: "loaded",
-				memes: [...prevState.memes, ...(data?.data || [])],
-				hasMore: data.hasMore || false,
-			}));
-		} catch (error) {
-			const message = (error as Error).message;
-			setState((prevState) => ({
-				...prevState,
-				status: "error",
-				error: message,
-			}));
+		switch (state.type) {
+			case "loaded":
+				if (!state.hasMore || loading.current) return;
+				loading.current = true;
+				try {
+					const data = await getMemes(state.query, state.memes.length);
+					setState((prevState: State) => {
+						if (prevState.type !== "loaded") {
+							return prevState;
+						}
+						return {
+							...prevState,
+							type: "loaded",
+							memes: [...prevState.memes, ...(data?.data || [])],
+							hasMore: data.hasMore || false,
+						};
+					});
+				} catch (error) {
+					const message = (error as Error).message;
+					setState((prevState: State) => {
+						if (prevState.type !== "loaded") {
+							return prevState;
+						}
+						return {
+							...prevState,
+							type: "error",
+							error: message,
+						};
+					});
+				} finally {
+					loading.current = false;
+				}
+				break;
+			default:
+				return;
 		}
 	};
 
@@ -71,5 +91,3 @@ const useMemes = () => {
 		fetchMoreData,
 	};
 };
-
-export default useMemes;

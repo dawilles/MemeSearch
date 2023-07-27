@@ -1,8 +1,12 @@
 import React from "react";
 import { CardMedia } from "@mui/material";
-import { ImageProps } from '../utils/types';
+import { Meme } from "../hooks/useMemes";
 
-const Image = ({ meme }: ImageProps) => {
+type ImageProps = {
+	meme: Meme;
+};
+
+export const Image = ({ meme }: ImageProps) => {
 	return (
 		<CardMedia
 			component='img'
@@ -16,5 +20,3 @@ const Image = ({ meme }: ImageProps) => {
 		/>
 	);
 };
-
-export default Image;
