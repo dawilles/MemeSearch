@@ -7,16 +7,20 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Grid from "@mui/material/Grid";
 
 type GalleryProps = {
-	memes: Meme[];
-	fetchMoreData: () => void;
+	data: Meme[];
 	hasMore: boolean;
+	onNextPage: () => void;
 };
 
-export const Gallery = ({ memes, fetchMoreData, hasMore }: GalleryProps) => {
+export const Gallery = ({
+	data = [],
+	hasMore = false,
+	onNextPage,
+}: GalleryProps) => {
 	return (
 		<InfiniteScroll
-			dataLength={memes.length}
-			next={fetchMoreData}
+			dataLength={data.length}
+			next={onNextPage}
 			hasMore={hasMore}
 			loader={
 				<Stack justifyContent='center'>
@@ -25,12 +29,17 @@ export const Gallery = ({ memes, fetchMoreData, hasMore }: GalleryProps) => {
 			}
 			style={{ overflow: "visible" }}>
 			<Grid container spacing={4} sx={{ marginTop: "30px" }}>
-				{memes.map((meme: Meme) => (
-					<Grid item xs={12} sm={6} md={4} lg={3} key={meme.id}>
-						<Image meme={meme} />
-					</Grid>
-				))}
+				{data.length ? (
+					data.map((meme: Meme) => (
+						<Grid item xs={12} sm={6} md={4} lg={3} key={meme.id}>
+							<Image meme={meme} />
+						</Grid>
+					))
+				) : (
+					<p>Brak dostępnych memów.</p>
+				)}
 			</Grid>
 		</InfiniteScroll>
 	);
 };
+

@@ -40,3 +40,4 @@ export const Search = ({ onSearch }: SearchProps) => {
 		</Formik>
 	);
 };
+

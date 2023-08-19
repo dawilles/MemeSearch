@@ -1,54 +1,11 @@
 import React from "react";
-import {
-	Container,
-	Typography,
-	Button,
-	CircularProgress,
-	Stack,
-} from "@mui/material";
+import { Container, Typography, CircularProgress, Stack } from "@mui/material";
 import { Gallery } from "./Gallery";
 import { Search } from "./Search";
 import { useMemes } from "../hooks/useMemes";
+import { notReachable } from "../utils/notReachable";
 
 export const App = () => {
-	const { state, handleSearch, fetchMoreData } = useMemes();
-
-	let content;
-	switch (state.type) {
-		case "loading":
-			content = (
-				<Stack justifyContent='center'>
-					<CircularProgress />
-				</Stack>
-			);
-			break;
-		case "error":
-			content = (
-				<>
-					<Typography color='error'>Error: {state.error}</Typography>
-					<Button
-						variant='contained'
-						color='primary'
-						onClick={() => handleSearch(state.query)}>
-						Try again
-					</Button>
-				</>
-			);
-			break;
-		case "loaded":
-			content = (
-				<Gallery
-					memes={state.memes}
-					fetchMoreData={fetchMoreData}
-					hasMore={state.hasMore}
-				/>
-			);
-			break;
-		default:
-			content = null;
-			break;
-	}
-
 	return (
 		<Container fixed>
 			<Stack flexDirection='column' alignItems='center'>
@@ -59,9 +16,47 @@ export const App = () => {
 					style={{ color: "#0016b3", margin: "20px" }}>
 					Giphy Meme Search
 				</Typography>
-				<Search onSearch={handleSearch} />
-				{content}
+				<SearchContentLoader />
 			</Stack>
 		</Container>
 	);
+};
+
+const SearchContentLoader = () => {
+	const { state, handleSearch, fetchMoreData } = useMemes();
+
+	switch (state.type) {
+		case "loading":
+			return (
+				<>
+					<Search onSearch={handleSearch} />
+					<Stack justifyContent='center'>
+						<CircularProgress />
+					</Stack>
+				</>
+			);
+
+		case "loaded":
+			return (
+				<>
+					<Search onSearch={handleSearch} />
+					<Gallery
+						data={state.data.memes}
+						hasMore={state.data.hasMore}
+						onNextPage={fetchMoreData}
+					/>
+				</>
+			);
+
+		case "error":
+			return (
+				<>
+					<Search onSearch={handleSearch} />
+					<Typography color='error'>{`Error: ${state.error}`}</Typography>
+				</>
+			);
+
+		default:
+			return notReachable(state);
+	}
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import { CardMedia } from "@mui/material";
+import { Box } from "@mui/material";
 import { Meme } from "../hooks/useMemes";
 
 type ImageProps = {
@@ -8,9 +8,9 @@ type ImageProps = {
 
 export const Image = ({ meme }: ImageProps) => {
 	return (
-		<CardMedia
+		<Box
 			component='img'
-			image={meme.images.fixed_width.url}
+			src={meme.images.fixed_width.url}
 			alt={meme.title}
 			sx={{
 				maxWidth: "100%",
@@ -20,3 +20,5 @@ export const Image = ({ meme }: ImageProps) => {
 		/>
 	);
 };
+
+
