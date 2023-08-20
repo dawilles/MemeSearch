@@ -36,10 +36,9 @@ export const Gallery = ({
 						</Grid>
 					))
 				) : (
-					<p>Brak dostępnych memów.</p>
+					<p>No memes available.</p>
 				)}
 			</Grid>
 		</InfiniteScroll>
 	);
 };
-

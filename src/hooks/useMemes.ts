@@ -1,66 +1,96 @@
-import { useLoadableData } from "./useLoadableData";
+import { useEffect, useState } from "react";
 import { getMemes, DEFAULT_LIMIT } from "../services/giphy";
+import { useLoadableData } from "./useLoadableData";
+import { useReloadableData } from "./useReloadableData";
 
 export type Meme = {
-	id: string;
-	title: string;
-	url: string;
-	images: {
-		fixed_width: {
-			url: string;
-		};
-	};
+  id: string;
+  title: string;
+  url: string;
+  images: {
+    fixed_width: {
+      url: string;
+    };
+  };
 };
 
-type Data = {
-	memes: Meme[];
-	hasMore: boolean;
+export type Data = {
+  memes: Meme[];
+  hasMore: boolean;
 };
 
 type Params = {
-	query: string;
-	offset: number;
+  query: string;
+  offset: number;
+};
+
+const fetchMemes = async (params: Params): Promise<Data> => {
+  const response = await getMemes({
+    query: params.query,
+    offset: params.offset,
+  });
+  return {
+    memes: response.data || [],
+    hasMore: response.hasMore || false,
+  };
 };
 
 export const useMemes = () => {
-	const initialParams: Params = {
-		query: "",
-		offset: 0,
-	};
+  const initialParams: Params = {
+    query: "",
+    offset: 0,
+  };
 
-	const { state, reload } = useLoadableData<Data, Params>(async (params) => {
-		const response = await getMemes({
-			query: params.query,
-			offset: params.offset,
-		});
-		return {
-			memes: response.data || [],
-			hasMore: response.hasMore || false,
-		};
-	}, initialParams);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
-	const handleSearch = (query: string) => {
-		console.log("handleSearch");
-		reload({
-			query: query,
-			offset: 0,
-		});
-	};
+  const {
+    state: loadableState,
+    reload,
+    setState,
+  } = useLoadableData<Data, Params>(fetchMemes, initialParams);
+  const { state: reloadableState, load: loadMore } = useReloadableData<Data, Params>(fetchMemes);
 
-	const fetchMoreData = () => {
-		console.log("fetchMoreData");
-		if (state.type === "loaded" && state.data.hasMore) {
-			const newOffset = state.params.offset + DEFAULT_LIMIT;
-			reload({
-				query: state.params.query,
-				offset: newOffset,
-			});
-		}
-	};
+  const handleSearch = (query: string) => {
+    reload({ query, offset: 0 });
+  };
 
-	return {
-		state,
-		handleSearch,
-		fetchMoreData,
-	};
+  const fetchMoreData = () => {
+    if (!isLoadingMore && loadableState.type === "loaded" && loadableState.data.hasMore) {
+      setIsLoadingMore(true);
+      const newOffset = loadableState.params.offset + DEFAULT_LIMIT;
+      loadMore({
+        query: loadableState.params.query,
+        offset: newOffset,
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (reloadableState.type === "loaded" && loadableState.type === "loaded") {
+      setIsLoadingMore(false);
+      const existingMemeIds = new Set(loadableState.data.memes.map(meme => meme.id));
+      const newMemes = reloadableState.data.memes.filter(meme => !existingMemeIds.has(meme.id));
+      const combinedMemes = [...loadableState.data.memes, ...newMemes];
+      const hasMore = reloadableState.data.hasMore;
+
+      const isNewDataDifferent = JSON.stringify(combinedMemes) !== JSON.stringify(loadableState.data.memes);
+
+      if (isNewDataDifferent) {
+        setState({
+          type: "loaded",
+          data: { memes: combinedMemes, hasMore: hasMore },
+          params: {
+            query: loadableState.params.query,
+            offset: loadableState.params.offset + DEFAULT_LIMIT 
+          },
+        });
+      }
+    }
+  }, [reloadableState, loadableState, setState]);
+
+  return {
+    loadableState,
+    handleSearch,
+    fetchMoreData,
+  };
 };

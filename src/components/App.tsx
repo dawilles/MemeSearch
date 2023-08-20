@@ -23,7 +23,7 @@ export const App = () => {
 };
 
 const SearchContentLoader = () => {
-	const { state, handleSearch, fetchMoreData } = useMemes();
+	const { loadableState: state, handleSearch, fetchMoreData } = useMemes();
 
 	switch (state.type) {
 		case "loading":
