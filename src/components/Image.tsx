@@ -1,6 +1,6 @@
 import React from "react";
 import { Box } from "@mui/material";
-import { Meme } from "../hooks/useMemes";
+import {Meme} from "../types";
 
 type ImageProps = {
 	meme: Meme;
