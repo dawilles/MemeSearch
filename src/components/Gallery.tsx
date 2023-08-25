@@ -1,11 +1,8 @@
 import React from "react";
-import { Image } from "./Image";
 import InfiniteScroll from "react-infinite-scroll-component";
-import Stack from "@mui/material/Box";
-import CircularProgress from "@mui/material/CircularProgress";
-import Grid from "@mui/material/Grid";
-import {Typography} from "@mui/material";
-import {Meme} from "../types";
+import { Stack, CircularProgress, Grid, Typography } from "@mui/material";
+import { Image } from "./Image";
+import { Meme } from "../types";
 
 type GalleryProps = {
 	data: Meme[];
@@ -13,15 +10,14 @@ type GalleryProps = {
 	onNextPage: () => void;
 };
 
-export const Gallery = ({
-	data,
-	hasMore,
-	onNextPage,
-}: GalleryProps) => {
-	if(!data.length) {
-		return <Typography>No memes available.</Typography>
+export const Gallery = ({ data, hasMore, onNextPage }: GalleryProps) => {
+	if (!data.length) {
+		return (
+			<Typography variant='h3' sx={{ marginTop: "1.4rem" }}>
+				No memes available.
+			</Typography>
+		);
 	}
-
 
 	return (
 		<InfiniteScroll
@@ -30,13 +26,13 @@ export const Gallery = ({
 			hasMore={hasMore}
 			loader={
 				<Stack justifyContent='center'>
-					<CircularProgress />
+					<CircularProgress sx={{ marginTop: "1.4rem" }} />
 				</Stack>
 			}
 			style={{ overflow: "visible" }}>
-			<Grid container spacing={4} sx={{ marginTop: "30px" }}>
+			<Grid container spacing={5} sx={{ marginTop: "1.4rem" }}>
 				{data.map((meme) => (
-					<Grid item xs={12} sm={6} md={4} lg={3} key={meme.id}>
+					<Grid item xs={6} sm={4} md={2} key={meme.id} justifyContent='center'>
 						<Image meme={meme} />
 					</Grid>
 				))}
