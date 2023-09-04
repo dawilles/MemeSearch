@@ -1,46 +1,44 @@
-# Getting Started with Create React App
+# 🕵️‍♂️ Meme Search Engine
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 🌟 Overview
 
-## Available Scripts
+Designed to sprinkle a little humor in your day, this Meme Search Engine lets you find memes that resonate with your current mood. As a junior Frontend Developer, building this project was a rich learning experience for me, providing hands-on exposure to several frontend technologies and best practices.
 
-In the project directory, you can run:
+## 🌐 Live Demo
 
-### `npm start`
+> **[Live Demo Link](#)** (Coming soon...)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## 🛠 Built With
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- **GIPHY API**: Integrated for meme fetching. 
 
-### `npm test`
+- **React**: The backbone of the user interface.
+- **TypeScript**: For static type checking.
+- **Material-UI**: For a responsive and intuitive UI.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🌈 Features
 
-### `npm run build`
+- **Infinite Scrolling**: Scroll and more memes will appear, thanks to `react-infinite-scroll-component`.
+- **Dynamic Themes**: Toggle between light and dark modes.
+- **Form Handling**: Leveraged `Formik` for streamlined form validation.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🎓 Good Practices
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- **Modular Code**: Components are isolated for easier debugging and testing.
+- **Custom Hooks**: Utilized for better reusability (`useColorMode`, `useReloadableData`).
+- **State Management**: Properly managed different states for data (`not_requested`, `loading`, `loaded`, `error`).
+- **Security**: Used environment variables for API keys.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 🎯 What I Learned
 
-### `npm run eject`
+- Practical experience with React and its ecosystem.
+- Advanced form handling using Formik.
+- How to design for UX, including error and loading states.
+- Learning to work with APIs was an invaluable experience.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+---
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+👤 **Dawid Tryba**
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Github: [@dawilles](https://github.com/Dawilles)
+- LinkedIn: [Dawid Tryba](https://www.linkedin.com/in/dawid-tryba/)

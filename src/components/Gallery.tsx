@@ -2,7 +2,7 @@ import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Stack, CircularProgress, Grid, Typography } from "@mui/material";
 import { Image } from "./Image";
-import { Meme } from "../types";
+import { Meme } from "../types/types";
 
 type GalleryProps = {
 	data: Meme[];
