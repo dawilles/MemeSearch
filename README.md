@@ -5,8 +5,7 @@
 Designed to sprinkle a little humor in your day, this Meme Search Engine lets you find memes that resonate with your current mood. As a junior Frontend Developer, building this project was a rich learning experience for me, providing hands-on exposure to several frontend technologies and best practices.
 
 ## 🌐 Live Demo
-
-> **[Live Demo Link](#https://clever-bienenstitch-88668c.netlify.app/)
+Check out the live demo: [Live Demo](https://clever-bienenstitch-88668c.netlify.app/)
 
 ## 🛠 Built With
 
