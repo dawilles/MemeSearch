@@ -26,7 +26,6 @@ Check out the live demo: [Live Demo](https://clever-bienenstitch-88668c.netlify.
 - **Modular Code**: Components are isolated for easier debugging and testing.
 - **Custom Hooks**: Utilized for better reusability (`useColorMode`, `useReloadableData`).
 - **State Management**: Properly managed different states for data (`not_requested`, `loading`, `loaded`, `error`).
-- **Security**: Used environment variables for API keys.
 
 ## 🎯 What I Learned
 
