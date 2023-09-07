@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import { Meme } from "../types/types";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
-export const DEFAULT_LIMIT = 20;
+export const DEFAULT_LIMIT = 30;
 
 type Data = { hasMore: boolean; memes: Meme[] };
 
